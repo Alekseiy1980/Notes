@@ -24,10 +24,10 @@ class NoteApp:
         if filter_date:
             filtered_notes = [note for note in self.notes if note.date[:10] == filter_date]
             for note in filtered_notes:
-                print(f"ID: {note.id}, Title: {note.title}, Body: {note.body}, Date: {note.date}")
+                print(f"ID: {note.id}, Title: {note.title}, \n Body: {note.body}, \n Date: {note.date}")
         else:
             for note in self.notes:
-                print(f"ID: {note.id}, Title: {note.title}, Body: {note.body}, Date: {note.date}")
+                print(f"ID: {note.id}, Title: {note.title}, \n Body: {note.body}, \n Date: {note.date}")
 
     def edit_note(self, id, title, body):
         for note in self.notes:
@@ -67,23 +67,31 @@ class NoteApp:
         except FileNotFoundError:
             pass
 
+    def read(self, id):
+        for note in self.notes:
+            if note.id == id:
+                print(f"ID: {note.id}, Title: {note.title}, \n Body: {note.body}, \n Date: {note.date}")
+                return
+        print("Заметка не найдена.")
+
 
 
 app = NoteApp()
 app.load_notes()
 
 while True:
-    command = input("Enter command (add, read, edit, delete, exit): ")
+    command = input("Введите команду (add, read, edit, delete, exit): ")
 
     if command == "add":
-        title = input("Enter note title: ")
-        body = input("Enter note body: ")
+        title = input("Введите название заметки: ")
+        body = input("введите заметку: ")
         app.add_note(title, body)
     elif command == "read":
-        filter_date = input("Enter filter date (YYYY-MM-DD) or leave empty: ")
+        filter_date = input("Введите дату (YYYY-MM-DD) или оставьте пустым: ")
         app.read_notes(filter_date)
     elif command == "edit":
         id = int(input("Введите ID заметки для редактирования: "))
+        app.read(id)
         title = input("Введите новое название: ")
         body = input("Введите изиенения в заметке : ")
         app.edit_note(id, title, body)
@@ -93,4 +101,4 @@ while True:
     elif command == "exit":
         break
     else:
-        print("Invalid command.")
+        print("Неизвестная команда")
